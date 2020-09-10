@@ -1,0 +1,26 @@
+/** @format */
+
+/// tag associated
+@import "icon";
+@import "inputText";
+
+/// non tag associated
+@import "text";
+@import "avatar";
+@import "back";
+@import "button";
+@import "holder";
+
+/// There are some components that share common styles
+
+/// button, buttonToggle, link, linkNav & select shared styles
+///
+/// @group SharedStyles
+.c-btn,
+.c-inTxt {
+	&:disabled,
+	&[disabled] {
+		opacity: 0.3;
+		pointer-events: none;
+	}
+}
