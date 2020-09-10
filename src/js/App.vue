@@ -23,7 +23,7 @@
 					</p>
 					<Trigger msg="Start over" @click="start" />
 				</div>
-				<div v-if="timeLeft > 0 && victory" class="c-flx m__flxColumn gu__flx-center">
+				<div v-if="timeLeft > 0 && full == 5" class="c-flx m__flxColumn gu__flx-center">
 					<div class="c-flx m__flxRow gu__flx-center">
 						<p class="gm__txtColor-secondary">
 							<b>Congratulations, you won!</b>
@@ -58,19 +58,19 @@
 						</div>
 					</div>
 					<div class="c-flxInline m__flxRow gu__flx-center">
-						<div class="c-avatar m__size-lg gm__dropArea is__full">
+						<div class="c-avatar m__size-lg gm__dropArea is__full" data-symbol="o">
 							<Draggable icon="zoovu-o" />
 						</div>
-						<div class="c-avatar m__size-lg gm__dropArea is__full">
+						<div class="c-avatar m__size-lg gm__dropArea is__full" data-symbol="z">
 							<Draggable icon="zoovu-z" />
 						</div>
-						<div class="c-avatar m__size-lg gm__dropArea is__full">
+						<div class="c-avatar m__size-lg gm__dropArea is__full" data-symbol="v">
 							<Draggable icon="zoovu-v" />
 						</div>
-						<div class="c-avatar m__size-lg gm__dropArea is__full">
+						<div class="c-avatar m__size-lg gm__dropArea is__full" data-symbol="u">
 							<Draggable icon="zoovu-u" />
 						</div>
-						<div class="c-avatar m__size-lg gm__dropArea is__full">
+						<div class="c-avatar m__size-lg gm__dropArea is__full" data-symbol="o">
 							<Draggable icon="zoovu-o" />
 						</div>
 					</div>
@@ -78,16 +78,14 @@
 
 				<div class="c-flx m__flxColumn gu__flx-center-start">
 					<p class="gm__txtSize-xs gm__txtColor-dark3">
-						<b>
-							...and drop them here to make the logo great again!
-						</b>
+						<b>...and drop them here to make the logo great again!</b>
 					</p>
 					<div class="c-flxInline m__flxRow gu__flx-center">
-						<button class="c-avatar m__size-lg gm__dropArea"></button>
-						<button class="c-avatar m__size-lg gm__dropArea"></button>
-						<button class="c-avatar m__size-lg gm__dropArea"></button>
-						<button class="c-avatar m__size-lg gm__dropArea"></button>
-						<button class="c-avatar m__size-lg gm__dropArea"></button>
+						<button class="c-avatar m__size-lg gm__dropArea" data-symbol="z"></button>
+						<button class="c-avatar m__size-lg gm__dropArea" data-symbol="o"></button>
+						<button class="c-avatar m__size-lg gm__dropArea" data-symbol="o"></button>
+						<button class="c-avatar m__size-lg gm__dropArea" data-symbol="v"></button>
+						<button class="c-avatar m__size-lg gm__dropArea" data-symbol="u"></button>
 					</div>
 				</div>
 			</div>
@@ -109,8 +107,9 @@
 			return {
 				playing: false,
 				name: "",
-				victory: false,
+				full: 0,
 				timeLeft: null,
+				dragged: null,
 			};
 		},
 		computed: {
@@ -137,18 +136,98 @@
 				}
 				return;
 			},
+			full(newAmount) {
+				if (newAmount == 5 && this.playing) {
+					// You won
+					this.playing = false;
+				}
+			},
+		},
+		mounted() {
+			document.addEventListener("keyup", this.keyUp, false);
+		},
+		beforeDestroy() {
+			// clear out listeners
+			this.setListeners(false);
+			document.removeEventListener("keyup", this.keyUp, false);
 		},
 		methods: {
 			start: function() {
 				// star game if name available
-				// console.log("test");
 				if (this.name) {
 					this.playing = true;
-					this.victory = false;
-					this.timeLeft = 25;
+					this.full = 0;
+					this.timeLeft = 25; //25 by default
+					this.setListeners();
 					return;
 				}
 				return alert("Please provide a name before proceeding.");
+			},
+			keyUp(e) {
+				if (e.key == "Enter" && !this.playing) {
+					//launch game on enter press
+					this.start();
+				}
+			},
+			setListeners(set = true) {
+				let _this = this,
+					status = (set ? "add" : "remove") + "EventListener";
+
+				setTimeout(() => {
+					if (_this.isAdvancedApi()) {
+						// Add our drag & drop listeners
+						let areas = document.getElementsByClassName("gm__dropArea");
+						areas.forEach(area => {
+							area[status]("dragover", _this.prevent, false);
+							area[status]("dragstart", _this.isStart, false);
+							area[status]("dragleave", _this.isOverToggle, false);
+							area[status]("dragenter", _this.isOverToggle, false);
+							area[status]("drop", _this.isDrop, false);
+						});
+					}
+				}, 100);
+			},
+			prevent(e) {
+				// just a prevent
+				e.preventDefault();
+				e.stopPropagation();
+			},
+			isStart(e) {
+				//drag start
+				this.dragged = e.target;
+			},
+			isOverToggle(e) {
+				//cursor is over
+				this.prevent(e);
+				e.target.classList.toggle("is__over");
+			},
+			isDrop(e) {
+				//file droped
+				this.prevent(e);
+				this.isOverToggle(e);
+				if (e.target.classList.contains("gm__dropArea") && !e.target.classList.contains("is__full")) {
+					// remove from old element
+					if (e.target.dataset.symbol == this.dragged.dataset.symbol) {
+						let old = this.dragged.parentNode;
+						old.removeChild(this.dragged);
+						old.classList.remove("is__full");
+						old.setAttribute("disabled", true);
+						// add to new element
+						e.target.appendChild(this.dragged);
+						e.target.classList.add("is__full");
+						// check letter
+						this.full = this.full + 1;
+					}
+				}
+			},
+			isAdvancedApi() {
+				// check support for drag and drop
+				var div = document.createElement("div");
+				return (
+					("draggable" in div || ("ondragstart" in div && "ondrop" in div)) &&
+					"FormData" in window &&
+					"FileReader" in window
+				);
 			},
 		},
 		// TERMINA LIFEHOOKS
