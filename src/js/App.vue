@@ -67,19 +67,19 @@
 						</div>
 					</div>
 					<div class="c-flxInline m__flxRow gu__flx-center">
-						<div class="c-avatar m__size-lg gm__dropArea is__full" data-symbol="o">
+						<div class="c-avatar m__size-lg gm__dropArea is__full" data-base="o">
 							<Draggable icon="zoovu-o" />
 						</div>
-						<div class="c-avatar m__size-lg gm__dropArea is__full" data-symbol="z">
+						<div class="c-avatar m__size-lg gm__dropArea is__full" data-base="z">
 							<Draggable icon="zoovu-z" />
 						</div>
-						<div class="c-avatar m__size-lg gm__dropArea is__full" data-symbol="v">
+						<div class="c-avatar m__size-lg gm__dropArea is__full" data-base="v">
 							<Draggable icon="zoovu-v" />
 						</div>
-						<div class="c-avatar m__size-lg gm__dropArea is__full" data-symbol="u">
+						<div class="c-avatar m__size-lg gm__dropArea is__full" data-base="u">
 							<Draggable icon="zoovu-u" />
 						</div>
-						<div class="c-avatar m__size-lg gm__dropArea is__full" data-symbol="o">
+						<div class="c-avatar m__size-lg gm__dropArea is__full" data-base="o">
 							<Draggable icon="zoovu-o" />
 						</div>
 					</div>
