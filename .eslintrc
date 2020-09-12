@@ -15,7 +15,8 @@
 	},
 	"extends": [
 		"plugin:vue/recommended",
-		"eslint:recommended"
+		"eslint:recommended",
+		"plugin:jest/recommended"
 	],
 	"plugins": [
 		"prettier"
@@ -58,6 +59,16 @@
 			],
 			"rules": {
 				"indent": "off"
+			}
+		},
+		{
+			"files": [
+				"*.spec.js",
+				"*.test.js"
+			],
+			"env": {
+				"jest": true,
+				"jest/globals": true
 			}
 		}
 	]
