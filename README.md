@@ -26,7 +26,7 @@ Then build the project, thats all.
     npm run dev
 ```
 
-While "**watch**" mode is available, i recommend to run the dev command at leat once to copy the static assets to the "**public**" directory 
+While "**watch**" mode is available, i recommend to run the dev command at least once to copy the static assets to the "**public**" directory 
 
 Also while developing you can optionally provide the enviroment variable "WATCH_BROWSER" to open a different browser than the system default
 
