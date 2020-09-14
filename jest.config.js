@@ -12,4 +12,5 @@ module.exports = {
 	collectCoverage: true,
 	collectCoverageFrom: ["src/js/{*,components/*}.{js,vue}", "!**/node_modules/**"],
 	coverageReporters: ["html", "text-summary"],
+	setupFiles: ["<rootDir>/test/setup.js"],
 };

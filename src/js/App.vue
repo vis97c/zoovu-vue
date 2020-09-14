@@ -6,7 +6,7 @@
 		</div>
 
 		<div class="c-holder gm__txtAlign-center gm__hidden:md-inv">
-			<div v-if="landing" class="c-flxInline m__flxColumn gu__flx-center">
+			<div v-if="landing" id="login" class="c-flxInline m__flxColumn gu__flx-center">
 				<!-- landing -->
 				<div v-if="!submited" class="c-flxInline m__flxColumn gu__flx-center">
 					<div class="x-txt xm__txtAlign-center">
@@ -42,7 +42,7 @@
 					</p>
 				</div>
 			</div>
-			<div v-else class="c-flx m__flxColumn gu__flx-center gm__gapingY-100">
+			<div v-else id="playground" class="c-flx m__flxColumn gu__flx-center gm__gapingY-100">
 				<div class="c-flx m__flxColumn gu__flx-center-stretch gm__gapingY-30">
 					<div class="c-flx m__flxColumn gu__flx-center-stretch">
 						<div class="c-flx m__flxRow gu__flx-between-center">
